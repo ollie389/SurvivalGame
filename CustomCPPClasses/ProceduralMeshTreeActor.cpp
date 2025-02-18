@@ -100,7 +100,6 @@ bool AProceduralMeshTreeActor::GetStaticMeshVertexInfo(UStaticMeshComponent* SM,
 			FVector3f Vertex = VertexBuffer->VertexPosition(Index);
 			FVector Vertex3d = FVector(Vertex.X, Vertex.Y, Vertex.Z);
 			FVector WSLocation = SM->GetOwner()->GetTransform().TransformVector(Vertex3d);
-			//FVector WSLocation = SM->GetOwner()->GetTransform().TransformVector(VertexBuffer->VertexPosition(Index));
 			VertexPositions.Add(WSLocation);
 
 			const FColor Color = ColorBuffer->VertexColor(Index);
@@ -115,7 +114,6 @@ bool AProceduralMeshTreeActor::GetStaticMeshVertexInfo(UStaticMeshComponent* SM,
 void AProceduralMeshTreeActor::MultiCastSetupTree_Implementation(FTransform PointTransform, float SliceHeight, UMaterialInterface* CapMaterialParam, UStaticMesh* TreeCollisionMesh)
 {
 	int32 NumMats = StaticMeshComponent->GetNumMaterials();
-	//NumMats = UKismetMathLibrary::Max(NumMats, 2);
 
 	ProceduralMeshComponent->bAffectDistanceFieldLighting = true;
 	for (int i = 0; i<1; i++) {
@@ -164,14 +162,11 @@ void AProceduralMeshTreeActor::MultiCastSetupTree_Implementation(FTransform Poin
 	CylinderMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CylinderMeshComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	//UKismetProceduralMeshLibrary::CopyProceduralMeshFromStaticMeshComponent(StaticMeshComponent, 0, ProceduralMeshComponent, true);
 	ProceduralMeshComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	ProceduralMeshComponent->SetVisibility(false);
 	CutLeavesProceduralMeshComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CutLeavesProceduralMeshComponent->SetVisibility(false);
 
-	
-	//UKismetProceduralMeshLibrary::CopyProceduralMeshFromStaticMeshComponent(StaticMeshComponent, 0, ProceduralMeshComponent, true);
 	ProceduralMeshComponent->SetScalarParameterValueOnMaterials(FName(TEXT("base_wind_speed")), 0.0f);
 	ProceduralMeshComponent->SetScalarParameterValueOnMaterials(FName(TEXT("wind_speed")), 0.0f);
 	ProceduralMeshComponent->SetScalarParameterValueOnMaterials(FName(TEXT("speed_base_wind_tree")), 0.0f);
@@ -236,27 +231,6 @@ void AProceduralMeshTreeActor::MultiCastSpawnTree_Implementation(FTransform Poin
 	CutLeavesProceduralMeshComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), TreeCutSound, GetActorLocation());
-
-	////Make custom collision box at top of mesh
-	//FBox MeshBounds = StaticMeshComponent->Bounds.GetBox();
-	//float MeshBoxHeight = MeshBounds.Max.Z - MeshBounds.Min.Z;
-	//FBox CollisionBounds = CylinderMeshComponent->GetStaticMesh()->GetBoundingBox();
-	//float CollisionBoxHeight = CollisionBounds.Max.Z - CollisionBounds.Min.Z;
-	//float MeshCollisionHeightRatio = MeshBoxHeight / CollisionBoxHeight;
-
-	//float HighestZ = CutOtherHalfTree->GetLocalBounds().GetBox().Max.Z;
-	//float LowestZ = CutOtherHalfTree->GetLocalBounds().GetBox().Min.Z;
-	//FVector HighestPoint = { 0,0,HighestZ };
-	//FVector MidPoint = { 0,0,(HighestZ + LowestZ) / 2 };
-	//float BoxSize = FMath::Min(100 * MeshCollisionHeightRatio / 15, 100);
-	//CustomCollisionBox->SetBoxExtent(FVector(BoxSize, BoxSize, BoxSize)); // Set the desired size
-	//CustomCollisionBox->AttachToComponent(CutOtherHalfTree, FAttachmentTransformRules::KeepRelativeTransform);
-	//CustomCollisionBox->SetRelativeLocation(HighestPoint);
-	//CustomCollisionBox->SetCollisionProfileName("NoCollision");
-	//CustomCollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly); //oliCHANGED CutActor->CustomCollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	//CustomCollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
-	//CustomCollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel9, ECollisionResponse::ECR_Overlap);
-	//CustomCollisionBox->SetVisibility(true);
 
 	StaticMeshComponent->SetScalarParameterValueOnMaterials(FName(TEXT("base_wind_speed")), 0.0f);
 	StaticMeshComponent->SetScalarParameterValueOnMaterials(FName(TEXT("speed_base_wind_tree")), 0.0f);
@@ -490,8 +464,6 @@ void AProceduralMeshTreeActor::DisplayCutDownTree(float MeshCollisionHeightRatio
 	//CustomCollisionBox->SetRelativeLocation(HighestPoint);
 	CustomCollisionBox->SetRelativeLocation(FVector(0, 0, (LowestZ + HighestZ) / 2));
 	CustomCollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	//CustomCollisionBox->SetCollisionResponseToAllChannels(ECR_Ignore);
-	//CustomCollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel9, ECollisionResponse::ECR_Overlap); //@NEW CHANGE
 	CustomCollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap); //@NEW CHANGE
 
 	CustomCollisionBox->SetGenerateOverlapEvents(true);
@@ -525,18 +497,4 @@ void AProceduralMeshTreeActor::DestroyProceduralMeshComponent()
 	}
 }
 
-//void AProceduralMeshTreeActor::OnDeathStarted(AActor*)
-//{
-//
-//}
-//
-//void AProceduralMeshTreeActor::OnDeathFinished(AActor*)
-//{
-//	if(CylinderMeshComponent)
-//	{
-//		Destroying = true;
-//		CylinderMeshComponent->DestroyComponent();
-//		MultiCastDestroyProceduralMeshComponent();
-//	}
-//}
 
