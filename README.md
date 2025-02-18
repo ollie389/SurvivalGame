@@ -7,8 +7,8 @@
 ![ScreenShot00001](https://github.com/user-attachments/assets/147d7671-9722-4cb4-954f-97808a63e7bc)
 
 2. Building system
-![ScreenShot00005](https://github.com/user-attachments/assets/f3d10ac2-0cfa-4411-8e6c-bc5e92fc92d1)
-   
+![ScreenShot00006](https://github.com/user-attachments/assets/318ab6eb-5bf6-4d78-9919-c148d9fc09a0)
+
 3. Leveling system
 ![ScreenShot00011](https://github.com/user-attachments/assets/358f8fe2-716a-4582-b04c-aaa0de44ae95)
 
